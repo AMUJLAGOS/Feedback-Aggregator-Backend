@@ -6,6 +6,8 @@ const fastify = Fastify({
 })
 
 
+fastify.register(require('./routes/figma.routes'), { prefix: '/api/v1' })
+
 async function main() {
   try {
     await AppDataSource.initialize()
