@@ -1,16 +1,26 @@
 // 
 
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 
 @Entity()
 export class FigmaUser {
-  @PrimaryGeneratedColumn()
-  id: string
+  @PrimaryGeneratedColumn('uuid')
+    id: string
   
   @Column()
-  figma_id: string
+    figma_id: string
+  
+  @Column()
+    figma_email: string
+  
 
   @Column()
-  figma_access: string
+    figma_handle: string
+  
+  @Column()
+    figma_image: string
+
+  @CreateDateColumn({type: Date})
+    createdOn: Date
 }
