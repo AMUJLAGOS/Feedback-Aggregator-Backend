@@ -1,7 +1,7 @@
 // 
 
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { FigmaComment } from "./comments.entity";
+import { FigmaTask } from "./comments.entity";
 
 
 @Entity()
@@ -15,8 +15,8 @@ export class Todo {
   @Column({default: false})
     is_resolved: Boolean
   
-  @OneToMany(() => FigmaComment, ()=> {})
-    comment: FigmaComment
+  @OneToMany(() => FigmaTask, ()=> {})
+    comment: FigmaTask
   
   @CreateDateColumn()
   createdOn: Date
