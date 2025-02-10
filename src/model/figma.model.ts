@@ -1,22 +1,22 @@
 // 
 
 import { AppDataSource } from "../data-source";
-import { createComment, createFile, createUser } from "../dataType";
-import { FigmaComment } from "../entity/comments.entity";
+import { createTask, createFile, createUser, getTasks } from "../dataType";
+import { FigmaTask } from "../entity/comments.entity";
 import { FigmaFile } from "../entity/file.entity";
 import { FigmaUser } from "../entity/user.entity";
 
 
 const userRepo = AppDataSource.getRepository(FigmaUser)
 const fileRepo = AppDataSource.getRepository(FigmaFile)
-const commentRepo = AppDataSource.getRepository(FigmaComment)
+const taskRepo = AppDataSource.getRepository(FigmaTask)
 
 export class FigmaModels {
-  static createUser = async (payload:createUser) => {
+  static createUser = async (payload: createUser) => {
     const checkUser = await userRepo.createQueryBuilder('user').where('user.figma_email = :email', { email: payload.figma_email }).getOne()
     
     if (checkUser) {
-      return checkUser
+      return {data:checkUser, status: 200}
     }
     const user = new FigmaUser
     user.figma_email = payload.figma_email
@@ -25,7 +25,7 @@ export class FigmaModels {
     user.figma_image = payload.figma_image
 
     const saveUser = await userRepo.save(user)
-    return saveUser
+    return  {data: saveUser, status: 201, message: 'User created'}
   }
 
   static createFile = async (payload:createFile) => {
@@ -39,36 +39,48 @@ export class FigmaModels {
     newFile.figma_file_id = payload.figma_file_id
     newFile.figma_file_key = payload.figma_file_key
     newFile.figma_name = payload.figma_name
-    const getUser = await userRepo.findOneBy({ figma_email: payload.user_email })
-    newFile.user = getUser
+    // const getUser = await userRepo.findOneBy({ figma_email: payload.user_email })
+    // newFile.user = getUser
     const saveFile = await fileRepo.save(newFile)
 
     return saveFile
   }
 
-  static createComment = async (payload:createComment) => {
-    const checkComment = await commentRepo.createQueryBuilder('comment').where('comment.figma_uuid = :uuid', { uuid: payload.figma_uuid }).getOne()
-    if (checkComment) {
-      if (checkComment.comment !== payload.comment) {
-        checkComment.comment = payload.comment
-        const updateComment = await commentRepo.save(checkComment)
-        return updateComment
+  static createTask = async (payload: createTask[]) => {
+    
+    for (const item of payload) {
+    const checkTask = await taskRepo.createQueryBuilder('comment').where('comment.figma_uuid = :uuid', { uuid: item.figma_uuid }).getOne()
+      if (checkTask) {
+        if (checkTask.comment !== item.message) {
+          checkTask.comment = item.message
+          const updateTask = await taskRepo.save(checkTask)
+          continue
+        }
+        continue
       }
-      return checkComment
+      const newTask = new FigmaTask
+      newTask.comment = item.message
+      newTask.figma_id = item.figma_id
+      newTask.figma_order_id = item.figma_order_id
+      newTask.figma_uuid = item.figma_uuid
+      newTask.board_name = item.board_name
+      newTask.board_number = item.board_number
+      newTask.creator_img = item.creator_img
+      const getFile = await fileRepo.findOneBy({ figma_file_key: item.file_key })
+      const getUser = await userRepo.findOneBy({figma_id: item.user_id})
+      newTask.figma_createdOn = new Date(item.figma_createdOn)
+      newTask.file = getFile
+      newTask.user = getUser
+      const saveTask = await taskRepo.save(newTask)
     }
-
-    const newComment = new FigmaComment
-    newComment.comment = payload.comment
-    newComment.figma_id = payload.figma_id
-    newComment.figma_order_id = payload.figma_order_id
-    newComment.figma_uuid = payload.figma_uuid
-    newComment.board_name = payload.board_name
-    newComment.board_number = payload.board_number
-    const getFile = await fileRepo.findOneBy({ figma_file_key: payload.file_key })
-    newComment.createdOn = new Date(payload.createdOn)
-    newComment.file = getFile
-
-    const saveComment = await commentRepo.save(newComment)
-    return saveComment
+    return {message: 'all saved'}
   }
+
+  static getTasks = async (payload: getTasks) => {
+    const getTasks = await taskRepo.createQueryBuilder('tasks').leftJoinAndSelect('tasks.user', 'user').leftJoin('tasks.file', 'file').where('user.figma_id = :user_id', { user_id: payload.user_figma_id }).andWhere('file.figma_file_id = :file_id', { file_id: payload.figma_file_key }).orderBy('tasks.figma_order_id', 'DESC').getMany()
+    
+    return getTasks
+  }
+
+  
 }

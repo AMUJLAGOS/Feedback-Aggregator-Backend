@@ -14,13 +14,20 @@ export type createFile = {
   user_email: string
 }
 
-export type createComment = {
+export type createTask = {
   figma_id: string
   file_key: string
   figma_uuid: string
-  comment: string
+  message: string
   figma_order_id: string
-  createdOn: string
+  figma_createdOn: string
   board_name: string
   board_number: string
+  user_id: string
+  creator_img: string
+}
+
+export type getTasks = {
+  user_figma_id: string
+  figma_file_key : string
 }

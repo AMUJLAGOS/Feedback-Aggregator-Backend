@@ -18,9 +18,6 @@ export class FigmaFile {
   @Column()
     figma_name: string
 
-  @ManyToOne(()=> FigmaUser, (user) => user.id )
-    user: FigmaUser
-
   @CreateDateColumn({type: Date})
     createdOn: Date
 }

@@ -3,14 +3,15 @@
 
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { FigmaFile } from "./file.entity";
+import { FigmaUser } from "./user.entity";
 
 
 @Entity()
-export class FigmaComment {
+export class FigmaTask {
   @PrimaryGeneratedColumn("uuid")
     id: string
   
-  @ManyToOne(()=> FigmaFile, (file)=> file.figma_file_key)
+  @ManyToOne(()=> FigmaFile)
     file: FigmaFile
 
   @Column()
@@ -34,6 +35,17 @@ export class FigmaComment {
   @Column({ nullable: true })
     due_date: Date
 
+  @Column("simple-array",{ nullable: true })
+  tags: string[]
+  
+  @Column({default: false})
+  is_resolved: Boolean
+  
+  @Column()
+  creator_img: string
+  
+  @ManyToOne(() => FigmaUser, {onDelete: "SET NULL"})
+    user: FigmaUser
   
   @Column()
     figma_createdOn :Date
