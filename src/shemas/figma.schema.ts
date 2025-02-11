@@ -10,7 +10,6 @@ const userSchema = T.Object({
   figma_image: T.String()
 })
 
-
 const fileSchema = T.Object({
   figma_file_id: T.String(),
   figma_file_key: T.String(),
@@ -18,6 +17,19 @@ const fileSchema = T.Object({
   user_email: T.String()
 })
 
+const tagSchema = T.Object({
+  tag: T.String(),
+  task_figma_id: T.String(),
+  user_figma_id: T.String()
+})
+
+const todoSchema = T.Object({
+  todo: T.String(),
+  task_id: T.String(),
+  user_id: T.String(),
+  file_id: T.String(),
+  todo_id: T.String()
+})
 
 
 
@@ -41,4 +53,18 @@ export const createTaskOpts = {
 
 export const getTasksOpts = {
   handler: FigmaControllers.getTasks
+}
+
+export const addTagOpts = {
+  schema: {
+    body: tagSchema
+  },
+  handler: FigmaControllers.addTag
+}
+
+export const todoOpts = {
+  chema: {
+    body: todoSchema
+  },
+  handler: FigmaControllers.createTodo
 }

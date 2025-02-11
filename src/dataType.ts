@@ -32,3 +32,24 @@ export type getTasks = {
   user_figma_id: string
   figma_file_key : string
 }
+
+export type AddTag = {
+  tag: string
+  task_figma_id: string
+  user_figma_id: string
+}
+
+export type CreateTodo = {
+  todo: string
+  task_id: string
+  user_id: string
+  file_id: string
+  todo_id: string
+}
+
+
+export type Status = {
+  task_id?: string
+  todo_id?: string
+  user_id: string
+}
