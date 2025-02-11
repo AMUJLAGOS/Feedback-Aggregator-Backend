@@ -1,15 +1,17 @@
 // 
 
 import { AppDataSource } from "../data-source";
-import { createTask, createFile, createUser, getTasks } from "../dataType";
+import { createTask, createFile, createUser, getTasks, AddTag, CreateTodo, Status } from "../dataType";
 import { FigmaTask } from "../entity/comments.entity";
 import { FigmaFile } from "../entity/file.entity";
+import { Todo } from "../entity/todo.entity";
 import { FigmaUser } from "../entity/user.entity";
 
 
 const userRepo = AppDataSource.getRepository(FigmaUser)
 const fileRepo = AppDataSource.getRepository(FigmaFile)
 const taskRepo = AppDataSource.getRepository(FigmaTask)
+const todoRepo = AppDataSource.getRepository(Todo)
 
 export class FigmaModels {
   static createUser = async (payload: createUser) => {
@@ -83,5 +85,71 @@ export class FigmaModels {
     return getTasks
   }
 
+  static addTag = async (payload: AddTag) => {
+    const getTask = await taskRepo.createQueryBuilder('task').leftJoin('tasks.user', 'user').where('task.figma_id = :figma_id', { figma_id: payload.task_figma_id }).andWhere('user.figma_id = :user_id', { user_id: payload.user_figma_id }).getOne()
+    
+    if (!getTask) {
+      return 'no task'
+    }
+    if (getTask.tags.includes(payload.tag)) {
+      return 'Tag added'
+    }
+    getTask.tags.push(payload.tag)
+    await taskRepo.save(getTask)
+    return 'Tag added'
+  }
+
+  static createTodo = async (payload:CreateTodo) => {
+    const getUser = await userRepo.findOneBy({ figma_id: payload.user_id })
+    const getTask = await taskRepo.findOneBy({ figma_id: payload.task_id })
+    const getFile = await fileRepo.findOneBy({figma_file_id: payload.file_id})
+    
+    if (!getUser && getTask && getFile) {
+      throw new Error('Input a valid user or task')
+    }
+    const newTodo = new Todo
+    newTodo.task = getTask
+    newTodo.user = getUser
+    newTodo.todo = payload.todo
+    newTodo.file = getFile
+    await todoRepo.save(newTodo)
+  } 
+
+  static getAllTaskTodo = async (payload:CreateTodo) => {
+    const getTaskTodo = await todoRepo.createQueryBuilder('todo').leftJoin('todo.task', 'task').leftJoin('todo.file', 'file').where('todo.id = :todo_id', { todo_id: payload.todo_id }).andWhere('task.figma_id =:task_id', { task_id: payload.task_id }).andWhere('file.figma_file_id = :file_id', { file_id: payload.file_id }).getMany()
+    
+    return getTaskTodo
+  }
+
+  static getFileTodo = async (payload: CreateTodo) => {
+    const getTaskTodo = await todoRepo.createQueryBuilder('todo').leftJoin('todo.file', 'file').where('todo.id = :todo_id', { todo_id: payload.todo_id }).andWhere('file.figma_file_id = :file_id', { file_id: payload.file_id }).getMany()
+    
+    return getTaskTodo
+  }
+
+  static changeStatus = async (payload: Status[]) => {
+    
+    for (const item of payload) {
+      if (item.task_id) {
+        const getTask = await taskRepo.createQueryBuilder('task').leftJoin('task.user', 'user').where("task.figma_id = :figma_od", { figma_id: item.task_id }).andWhere('user.figma_id = :user_id', { user_id: item.user_id }).getOne()
+        
+        getTask.is_resolved = !getTask.is_resolved
+
+        await taskRepo.save(getTask)
+      }
+
+      if (item.todo_id) {
+        const getTodo = await todoRepo.createQueryBuilder('todo').leftJoin('todo.user', 'user').where("todo.figma_id = :figma_od", { figma_id: item.task_id }).andWhere('user.figma_id = :user_id', { user_id: item.user_id }).getOne()
+        
+        getTodo.is_resolved = !getTodo.is_resolved
+
+        await taskRepo.save(getTodo)
+      }
+    }
+   
+  }
   
+  static addDueDate = () => {
+    
+  }
 }

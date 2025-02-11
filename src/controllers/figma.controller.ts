@@ -2,7 +2,7 @@
 
 import { FastifyReply, FastifyRequest } from "fastify"
 import { FigmaModels } from "../model/figma.model"
-import { createTask, createFile, createUser, getTasks } from "../dataType"
+import { createTask, createFile, createUser, getTasks, AddTag, CreateTodo, Status } from "../dataType"
 
 const okayRes = {
   status: "okay",
@@ -48,6 +48,42 @@ export class FigmaControllers {
     try {
       const res = await FigmaModels.getTasks(req.params)
       reply.code(200).send({ ...okayRes, data: res })
+    } catch (e) {
+      reply.code(400).send({ ...errorRes, message: e.message })
+    }
+  }
+
+  static addTag = async (req:FastifyRequest<{Body: AddTag}>, reply:FastifyReply) => {
+    try {
+      const res = await FigmaModels.addTag(req.body)
+      reply.code(201).send({...okayRes, message: res})
+    } catch (e) {
+      reply.code(400).send({ ...errorRes, message: e.message })
+    }
+  }
+
+  static createTodo = async (req: FastifyRequest<{Body:CreateTodo}>, reply: FastifyReply) => {
+    try {
+      const res = await FigmaModels.createTodo(req.body)
+      reply.code(201).send({...okayRes, data: res})
+    } catch (e) {
+      reply.code(400).send({ ...errorRes, message: e.message })
+    }
+  }
+
+  static getAllTaskTodo = async (req: FastifyRequest<{Body:CreateTodo}>, reply:FastifyReply) => {
+    try {
+      const res = await FigmaModels.getAllTaskTodo(req.body)
+      reply.code(201).send({...okayRes, data: res})
+    } catch (e) {
+      reply.code(400).send({ ...errorRes, message: e.message })
+    }
+  }
+
+  static changeStatus = async (req: FastifyRequest<{Body:Status[]}>, reply: FastifyReply) => {
+    try {
+      const res = await FigmaModels.changeStatus(req.body)
+      reply.code(201).send({...okayRes, data: res})
     } catch (e) {
       reply.code(400).send({ ...errorRes, message: e.message })
     }
