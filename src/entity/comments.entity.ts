@@ -42,7 +42,10 @@ export class FigmaTask {
   is_resolved: Boolean
   
   @Column()
-  creator_img: string
+    creator_img: string
+
+  @Column()
+    creator_name: string
   
   @ManyToOne(() => FigmaUser, {onDelete: "SET NULL"})
     user: FigmaUser
