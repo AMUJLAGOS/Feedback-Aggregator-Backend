@@ -25,6 +25,7 @@ export type createTask = {
   board_number: string
   user_id: string
   creator_img: string
+  creator_name:string
 }
 
 export type getTasks = {

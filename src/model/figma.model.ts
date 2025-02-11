@@ -71,7 +71,8 @@ export class FigmaModels {
       newTask.figma_createdOn = new Date(item.figma_createdOn)
       newTask.file = getFile
       newTask.user = getUser
-      const saveTask = await taskRepo.save(newTask)
+      newTask.creator_name = item.creator_name
+      await taskRepo.save(newTask)
     }
     return {message: 'all saved'}
   }
