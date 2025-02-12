@@ -35,7 +35,7 @@ export class FigmaControllers {
     }
   }
 
-  static createTask = async (req: FastifyRequest<{Body:createTask[] } >, reply:FastifyReply) => {
+  static createTask = async (req: FastifyRequest<{ Body: createTask[] }>, reply: FastifyReply) => {
     try {
       const res = await FigmaModels.createTask(req.body)
       reply.code(200).send({ ...okayRes, data: res })
@@ -53,28 +53,37 @@ export class FigmaControllers {
     }
   }
 
-  static addTag = async (req:FastifyRequest<{Body: AddTag}>, reply:FastifyReply) => {
+  static addTag = async (req: FastifyRequest<{ Body: AddTag }>, reply: FastifyReply) => {
     try {
       const res = await FigmaModels.addTag(req.body)
-      reply.code(201).send({...okayRes, message: res})
+      reply.code(201).send({ ...okayRes, message: res })
     } catch (e) {
       reply.code(400).send({ ...errorRes, message: e.message })
     }
   }
 
-  static createTodo = async (req: FastifyRequest<{Body:CreateTodo}>, reply: FastifyReply) => {
+  static createTodo = async (req: FastifyRequest<{ Body: CreateTodo }>, reply: FastifyReply) => {
     try {
       const res = await FigmaModels.createTodo(req.body)
-      reply.code(201).send({...okayRes, data: res})
+      reply.code(201).send({ ...okayRes, data: res })
     } catch (e) {
       reply.code(400).send({ ...errorRes, message: e.message })
     }
   }
 
-  static getAllTaskTodo = async (req: FastifyRequest<{Body:CreateTodo}>, reply:FastifyReply) => {
+  static getAllTaskTodo = async (req: FastifyRequest<{ Body: CreateTodo }>, reply: FastifyReply) => {
     try {
       const res = await FigmaModels.getAllTaskTodo(req.body)
-      reply.code(201).send({...okayRes, data: res})
+      reply.code(201).send({ ...okayRes, data: res })
+    } catch (e) {
+      reply.code(400).send({ ...errorRes, message: e.message })
+    }
+  }
+
+  static getFileTodo = async (req: FastifyRequest<{ Body: CreateTodo }>, reply: FastifyReply) => {
+     try {
+      const res = await FigmaModels.getFileTodo(req.body)
+      reply.code(201).send({ ...okayRes, data: res })
     } catch (e) {
       reply.code(400).send({ ...errorRes, message: e.message })
     }

@@ -122,7 +122,7 @@ export class FigmaModels {
   }
 
   static getFileTodo = async (payload: CreateTodo) => {
-    const getTaskTodo = await todoRepo.createQueryBuilder('todo').leftJoin('todo.file', 'file').where('todo.id = :todo_id', { todo_id: payload.todo_id }).andWhere('file.figma_file_id = :file_id', { file_id: payload.file_id }).getMany()
+    const getTaskTodo = await todoRepo.createQueryBuilder('todo').leftJoin('todo.user', 'user').leftJoin('todo.file', 'file').where('todo.id = :todo_id', { todo_id: payload.todo_id }).andWhere('file.figma_file_id = :file_id', { file_id: payload.file_id }).andWhere('user.fig_id = :user_id', {user_id: payload.user_id}).getMany()
     
     return getTaskTodo
   }
