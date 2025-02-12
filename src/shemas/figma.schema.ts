@@ -62,9 +62,21 @@ export const addTagOpts = {
   handler: FigmaControllers.addTag
 }
 
-export const todoOpts = {
+export const createTodoOpts = {
   chema: {
     body: todoSchema
   },
   handler: FigmaControllers.createTodo
+}
+
+export const getTaskTodoOpts = {
+  handler: FigmaControllers.getAllTaskTodo
+}
+
+export const getFileTodo = {
+  handler: FigmaControllers.getFileTodo
+}
+
+export const changeStatus = {
+  handler: FigmaControllers.changeStatus
 }
