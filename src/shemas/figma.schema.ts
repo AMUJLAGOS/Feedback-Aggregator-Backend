@@ -28,7 +28,7 @@ const todoSchema = T.Object({
   task_id: T.String(),
   user_id: T.String(),
   file_id: T.String(),
-  todo_id: T.String()
+  // todo_id: T.String()
 })
 
 
