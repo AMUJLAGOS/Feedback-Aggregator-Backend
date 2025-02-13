@@ -14,7 +14,7 @@ async function figmaRoutes(fastify:FastifyInstance, options) {
   fastify.get('/get-tasks/:user_figma_id/:figma_file_key', getTasksOpts)
   fastify.post('/add-tag', addTagOpts)
   fastify.post('/create-todo', createTodoOpts)
-  fastify.get('/get-todo-task/:todo_id/:task_id/:file_id', getTaskTodoOpts)
+  fastify.get('/get-todo-task/:task_id', getTaskTodoOpts)
   fastify.get('/get-todo-file/:todo_id/:file_id/:user_id', getFileTodo)
   fastify.patch('/change-status', changeStatus)
 }

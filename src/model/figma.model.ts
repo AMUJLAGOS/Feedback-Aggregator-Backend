@@ -86,17 +86,26 @@ export class FigmaModels {
   }
 
   static addTag = async (payload: AddTag) => {
-    const getTask = await taskRepo.createQueryBuilder('task').leftJoin('tasks.user', 'user').where('task.figma_id = :figma_id', { figma_id: payload.task_figma_id }).andWhere('user.figma_id = :user_id', { user_id: payload.user_figma_id }).getOne()
+    const getTask = await taskRepo.createQueryBuilder('task').leftJoin('task.user', 'user').where('task.figma_id = :figma_id', { figma_id: payload.task_figma_id }).andWhere('user.figma_id = :user_id', { user_id: payload.user_figma_id }).getOne()
     
     if (!getTask) {
       return 'no task'
     }
-    if (getTask.tags.includes(payload.tag)) {
-      return 'Tag added'
+    if (getTask.tags !== null) {
+      if (getTask.tags.includes(payload.tag)) {
+        return getTask.tags
+      }
+      getTask.tags = [...getTask.tags, payload.tag]
+      const saved = await taskRepo.save(getTask)
+      return saved.tags
     }
-    getTask.tags.push(payload.tag)
-    await taskRepo.save(getTask)
-    return 'Tag added'
+    getTask.tags = [payload.tag]
+    const saved = await taskRepo.save(getTask)
+    return saved.tags
+  }
+
+  static getTags = async (payload:{task_id: string}) => {
+    // const getTaskT
   }
 
   static createTodo = async (payload:CreateTodo) => {
@@ -116,7 +125,7 @@ export class FigmaModels {
   } 
 
   static getAllTaskTodo = async (payload:CreateTodo) => {
-    const getTaskTodo = await todoRepo.createQueryBuilder('todo').leftJoin('todo.task', 'task').leftJoin('todo.file', 'file').where('todo.id = :todo_id', { todo_id: payload.todo_id }).andWhere('task.figma_id =:task_id', { task_id: payload.task_id }).andWhere('file.figma_file_id = :file_id', { file_id: payload.file_id }).getMany()
+    const getTaskTodo = await todoRepo.createQueryBuilder('todo').leftJoin('todo.task', 'task').where('task.id = :task_id', { task_id: payload.task_id}).getMany()
     
     return getTaskTodo
   }

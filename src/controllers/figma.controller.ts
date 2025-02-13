@@ -56,7 +56,7 @@ export class FigmaControllers {
   static addTag = async (req: FastifyRequest<{ Body: AddTag }>, reply: FastifyReply) => {
     try {
       const res = await FigmaModels.addTag(req.body)
-      reply.code(201).send({ ...okayRes, message: res })
+      reply.code(201).send({ ...okayRes, data:res })
     } catch (e) {
       reply.code(400).send({ ...errorRes, message: e.message })
     }
@@ -71,9 +71,9 @@ export class FigmaControllers {
     }
   }
 
-  static getAllTaskTodo = async (req: FastifyRequest<{ Body: CreateTodo }>, reply: FastifyReply) => {
+  static getAllTaskTodo = async (req: FastifyRequest<{ Params: CreateTodo }>, reply: FastifyReply) => {
     try {
-      const res = await FigmaModels.getAllTaskTodo(req.body)
+      const res = await FigmaModels.getAllTaskTodo(req.params)
       reply.code(201).send({ ...okayRes, data: res })
     } catch (e) {
       reply.code(400).send({ ...errorRes, message: e.message })
