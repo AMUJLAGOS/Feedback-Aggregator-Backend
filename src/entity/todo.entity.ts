@@ -9,27 +9,27 @@ import { FigmaFile } from "./file.entity";
 @Entity()
 export class Todo {
   @PrimaryGeneratedColumn("uuid")
-    id: string
-  
+  id: string
+
   @Column()
-    todo: string
-  
-  @Column({default: false})
-    is_resolved: Boolean
-  
+  todo: string
+
+  @Column({ default: false })
+  is_resolved: Boolean
+
   @ManyToOne(() => FigmaTask)
-    task: FigmaTask
-  
+  task: FigmaTask
+
   @ManyToOne(() => FigmaFile)
-    file: FigmaFile
-  
+  file: FigmaFile
+
   @ManyToOne(() => FigmaUser)
-    user:FigmaUser
-  
+  user: FigmaUser
+
   @CreateDateColumn()
   createdOn: Date
-  
-  @Column({nullable:true})
-    resolvedOn : Date
-  
+
+  @Column({ nullable: true })
+  resolvedOn: Date
+
 }
