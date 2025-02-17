@@ -56,7 +56,7 @@ export class FigmaControllers {
   static addTag = async (req: FastifyRequest<{ Body: AddTag }>, reply: FastifyReply) => {
     try {
       const res = await FigmaModels.addTag(req.body)
-      reply.code(201).send({ ...okayRes, data:res })
+      reply.code(201).send({ ...okayRes, data: res })
     } catch (e) {
       reply.code(400).send({ ...errorRes, message: e.message })
     }
@@ -81,7 +81,7 @@ export class FigmaControllers {
   }
 
   static getFileTodo = async (req: FastifyRequest<{ Body: CreateTodo }>, reply: FastifyReply) => {
-     try {
+    try {
       const res = await FigmaModels.getFileTodo(req.body)
       reply.code(201).send({ ...okayRes, data: res })
     } catch (e) {
@@ -89,10 +89,19 @@ export class FigmaControllers {
     }
   }
 
-  static changeStatus = async (req: FastifyRequest<{Body:Status[]}>, reply: FastifyReply) => {
+  static changeTodoStatus = async (req: FastifyRequest<{ Body: Status }>, reply: FastifyReply) => {
+    try {
+      const res = await FigmaModels.changeTodoStatus(req.body)
+      reply.code(200).send({ ...okayRes, data: res })
+    } catch (e) {
+      reply.code(400).send({ ...errorRes, message: e.message })
+    }
+  }
+
+  static changeStatus = async (req: FastifyRequest<{ Body: Status[] }>, reply: FastifyReply) => {
     try {
       const res = await FigmaModels.changeStatus(req.body)
-      reply.code(201).send({...okayRes, data: res})
+      reply.code(201).send({ ...okayRes, data: res })
     } catch (e) {
       reply.code(400).send({ ...errorRes, message: e.message })
     }

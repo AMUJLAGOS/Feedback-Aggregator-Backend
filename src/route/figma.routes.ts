@@ -1,13 +1,13 @@
 // 
 
 import { FastifyInstance } from "fastify"
-import { createTaskOpts, createFileOpts, createUserOpts, getTasksOpts, addTagOpts, createTodoOpts, getTaskTodoOpts, getFileTodo, changeStatus } from "../shemas/figma.schema"
+import { createTaskOpts, createFileOpts, createUserOpts, getTasksOpts, addTagOpts, createTodoOpts, getTaskTodoOpts, getFileTodo, changeStatus, changeTodoStatus } from "../shemas/figma.schema"
 
 
 // 
 
 
-async function figmaRoutes(fastify:FastifyInstance, options) {
+async function figmaRoutes(fastify: FastifyInstance, options) {
   fastify.post('/create-user', createUserOpts)
   fastify.post('/create-file', createFileOpts)
   fastify.post('/create-task', createTaskOpts)
@@ -17,6 +17,7 @@ async function figmaRoutes(fastify:FastifyInstance, options) {
   fastify.get('/get-todo-task/:task_id', getTaskTodoOpts)
   fastify.get('/get-todo-file/:todo_id/:file_id/:user_id', getFileTodo)
   fastify.patch('/change-status', changeStatus)
+  fastify.patch('/change-todo-status', changeTodoStatus)
 }
 
 

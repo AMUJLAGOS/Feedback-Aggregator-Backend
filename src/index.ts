@@ -39,7 +39,7 @@ async function main() {
   }
   try {
     await fastify.listen({ port: 3030 })
-     console.log('server up!')
+    console.log('server up!')
   } catch (e) {
     fastify.log.error(e)
     process.exit(1)

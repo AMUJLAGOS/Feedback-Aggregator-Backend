@@ -9,50 +9,50 @@ import { FigmaUser } from "./user.entity";
 @Entity()
 export class FigmaTask {
   @PrimaryGeneratedColumn("uuid")
-    id: string
-  
-  @ManyToOne(()=> FigmaFile)
-    file: FigmaFile
+  id: string
+
+  @ManyToOne(() => FigmaFile)
+  file: FigmaFile
 
   @Column()
-    figma_id: string
-  
-  @Column()
-    figma_uuid: string
+  figma_id: string
 
   @Column()
-    comment: string
-  
-  @Column()
-    board_name: string
-  
-  @Column()
-    board_number: string
+  figma_uuid: string
 
   @Column()
-   figma_order_id: string
-  
+  comment: string
+
+  @Column()
+  board_name: string
+
+  @Column()
+  board_number: string
+
+  @Column()
+  figma_order_id: string
+
   @Column({ nullable: true })
-    due_date: Date
+  due_date: Date
 
-  @Column("simple-array",{ nullable: true })
+  @Column("simple-array", { default: '' })
   tags: string[]
-  
-  @Column({default: false})
+
+  @Column({ default: false })
   is_resolved: Boolean
-  
-  @Column()
-    creator_img: string
 
   @Column()
-    creator_name: string
-  
-  @ManyToOne(() => FigmaUser, {onDelete: "SET NULL"})
-    user: FigmaUser
-  
+  creator_img: string
+
   @Column()
-    figma_createdOn :Date
-  
-  @CreateDateColumn({type: Date})
-    createdOn: Date
+  creator_name: string
+
+  @ManyToOne(() => FigmaUser, { onDelete: "SET NULL" })
+  user: FigmaUser
+
+  @Column()
+  figma_createdOn: Date
+
+  @CreateDateColumn({ type: Date })
+  createdOn: Date
 }

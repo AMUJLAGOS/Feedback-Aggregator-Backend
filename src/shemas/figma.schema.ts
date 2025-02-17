@@ -80,3 +80,8 @@ export const getFileTodo = {
 export const changeStatus = {
   handler: FigmaControllers.changeStatus
 }
+
+
+export const changeTodoStatus = {
+  handler: FigmaControllers.changeTodoStatus
+}

@@ -25,12 +25,12 @@ export type createTask = {
   board_number: string
   user_id: string
   creator_img: string
-  creator_name:string
+  creator_name: string
 }
 
 export type getTasks = {
   user_figma_id: string
-  figma_file_key : string
+  figma_file_key: string
 }
 
 export type AddTag = {

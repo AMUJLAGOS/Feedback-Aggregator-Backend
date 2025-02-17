@@ -6,21 +6,21 @@ import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeor
 @Entity()
 export class FigmaUser {
   @PrimaryGeneratedColumn('uuid')
-    id: string
-  
-  @Column()
-    figma_id: string
-  
-  @Column()
-    figma_email: string
-  
+  id: string
 
   @Column()
-    figma_handle: string
-  
-  @Column()
-    figma_image: string
+  figma_id: string
 
-  @CreateDateColumn({type: Date})
-    createdOn: Date
+  @Column()
+  figma_email: string
+
+
+  @Column()
+  figma_handle: string
+
+  @Column()
+  figma_image: string
+
+  @CreateDateColumn({ type: Date })
+  createdOn: Date
 }
