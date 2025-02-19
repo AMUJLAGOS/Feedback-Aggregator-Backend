@@ -106,4 +106,13 @@ export class FigmaControllers {
       reply.code(400).send({ ...errorRes, message: e.message })
     }
   }
+
+  static addDueDate = async (req: FastifyRequest<{ Body: { task_id: string, date: string } }>, reply: FastifyReply) => {
+    try {
+      const res = await FigmaModels.addDueDate(req.body)
+      reply.code(200).send({ ...okayRes, data: res })
+    } catch (e) {
+      reply.code(400).send({ ...errorRes, message: e.message })
+    }
+  }
 }
