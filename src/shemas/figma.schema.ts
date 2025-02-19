@@ -85,3 +85,7 @@ export const changeStatus = {
 export const changeTodoStatus = {
   handler: FigmaControllers.changeTodoStatus
 }
+
+export const addDueDate = {
+  handler: FigmaControllers.addDueDate
+}
