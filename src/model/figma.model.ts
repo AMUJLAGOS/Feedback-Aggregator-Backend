@@ -80,7 +80,7 @@ export class FigmaModels {
   }
 
   static getTasks = async (payload: getTasks) => {
-    const getTasks = await taskRepo.createQueryBuilder('tasks').leftJoinAndSelect('tasks.user', 'user').leftJoin('tasks.file', 'file').where('user.figma_id = :user_id', { user_id: payload.user_figma_id }).andWhere('file.figma_file_id = :file_id', { file_id: payload.figma_file_key }).orderBy('tasks.figma_order_id', 'DESC').getMany()
+    const getTasks = await taskRepo.createQueryBuilder('tasks').leftJoinAndSelect('tasks.user', 'user').leftJoin('tasks.file', 'file').leftJoinAndSelect('tasks.todos', "todos").where('user.figma_id = :user_id', { user_id: payload.user_figma_id }).andWhere('file.figma_file_id = :file_id', { file_id: payload.figma_file_key }).orderBy('tasks.figma_order_id', 'DESC').getMany()
 
     return getTasks
   }

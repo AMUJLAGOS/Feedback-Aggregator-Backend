@@ -1,9 +1,10 @@
 
 // 
 
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { FigmaFile } from "./file.entity";
 import { FigmaUser } from "./user.entity";
+import { Todo } from "./todo.entity";
 
 
 @Entity()
@@ -49,6 +50,9 @@ export class FigmaTask {
 
   @ManyToOne(() => FigmaUser, { onDelete: "SET NULL" })
   user: FigmaUser
+
+  @OneToMany(() => Todo, (todo) => todo.task)
+  todos: Todo[]
 
   @Column()
   figma_createdOn: Date
