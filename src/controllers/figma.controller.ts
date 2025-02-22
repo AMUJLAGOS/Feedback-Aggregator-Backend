@@ -80,9 +80,9 @@ export class FigmaControllers {
     }
   }
 
-  static getFileTodo = async (req: FastifyRequest<{ Body: CreateTodo }>, reply: FastifyReply) => {
+  static getFileTodo = async (req: FastifyRequest<{ Params: CreateTodo }>, reply: FastifyReply) => {
     try {
-      const res = await FigmaModels.getFileTodo(req.body)
+      const res = await FigmaModels.getFileTodo(req.params)
       reply.code(201).send({ ...okayRes, data: res })
     } catch (e) {
       reply.code(400).send({ ...errorRes, message: e.message })

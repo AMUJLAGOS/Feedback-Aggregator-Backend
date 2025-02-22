@@ -15,7 +15,7 @@ async function figmaRoutes(fastify: FastifyInstance, options) {
   fastify.post('/add-tag', addTagOpts)
   fastify.post('/create-todo', createTodoOpts)
   fastify.get('/get-todo-task/:task_id', getTaskTodoOpts)
-  fastify.get('/get-todo-file/:todo_id/:file_id/:user_id', getFileTodo)
+  fastify.get('/get-todo-file/:file_id/:user_id', getFileTodo)
   fastify.patch('/change-status', changeStatus)
   fastify.patch('/change-todo-status', changeTodoStatus)
   fastify.post('/add-duedate', addDueDate)
