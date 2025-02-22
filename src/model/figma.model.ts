@@ -133,7 +133,8 @@ export class FigmaModels {
   }
 
   static getFileTodo = async (payload: CreateTodo) => {
-    const getTaskTodo = await todoRepo.createQueryBuilder('todo').leftJoin('todo.user', 'user').leftJoin('todo.file', 'file').where('todo.id = :todo_id', { todo_id: payload.todo_id }).andWhere('file.figma_file_id = :file_id', { file_id: payload.file_id }).andWhere('user.fig_id = :user_id', { user_id: payload.user_id }).getMany()
+    console.log(payload)
+    const getTaskTodo = await todoRepo.createQueryBuilder('todo').leftJoin('todo.user', 'user').leftJoin('todo.file', 'file').where('file.figma_file_id = :file_id', { file_id: payload.file_id }).andWhere('user.figma_id = :user_id', { user_id: payload.user_id }).getMany()
 
     return getTaskTodo
   }
@@ -151,7 +152,7 @@ export class FigmaModels {
   static changeStatus = async (payload: Status[]) => {
 
     for (const item of payload) {
-      const getTask = await taskRepo.createQueryBuilder('task').leftJoin('task.user', 'user').where("task.figma_id = :figma_id", { figma_id: item.task_id }).andWhere('user.figma_id = :user_id', { user_id: item.user_id }).getOne()
+      const getTask = await taskRepo.createQueryBuilder('task').leftJoin('task.user', 'user').where("task.id = :task_id", { task_id: item.task_id }).andWhere('user.figma_id = :user_id', { user_id: item.user_id }).getOne()
 
       getTask.is_resolved = !getTask.is_resolved
       await taskRepo.save(getTask)
