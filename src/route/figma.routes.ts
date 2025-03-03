@@ -1,7 +1,7 @@
 // 
 
 import { FastifyInstance } from "fastify"
-import { createTaskOpts, createFileOpts, createUserOpts, getTasksOpts, addTagOpts, createTodoOpts, getTaskTodoOpts, getFileTodo, changeStatus, changeTodoStatus, addDueDate } from "../shemas/figma.schema"
+import { createTaskOpts, createFileOpts, createUserOpts, getTasksOpts, addTagOpts, createTodoOpts, getTaskTodoOpts, getFileTodo, changeStatus, changeTodoStatus, addDueDate, userTasks, editComment } from "../shemas/figma.schema"
 
 
 // 
@@ -19,6 +19,8 @@ async function figmaRoutes(fastify: FastifyInstance, options) {
   fastify.patch('/change-status', changeStatus)
   fastify.patch('/change-todo-status', changeTodoStatus)
   fastify.post('/add-duedate', addDueDate)
+  fastify.get('/user-task/:user_id', userTasks)
+  fastify.patch('/update-comment', editComment)
 }
 
 
