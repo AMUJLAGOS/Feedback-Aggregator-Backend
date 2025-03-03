@@ -51,11 +51,11 @@ export class FigmaModels {
   static createTask = async (payload: createTask[]) => {
 
     for (const item of payload) {
-      const checkTask = await taskRepo.createQueryBuilder('comment').where('comment.figma_uuid = :uuid', { uuid: item.figma_uuid }).getOne()
+      const checkTask = await taskRepo.createQueryBuilder('comment').leftJoin('comment.user', "user").where('comment.figma_uuid = :uuid', { uuid: item.figma_uuid }).andWhere('user.figma_id = :id', { id: item.user_id }).getOne()
       if (checkTask) {
         if (checkTask.comment !== item.message) {
-          checkTask.comment = item.message
-          const updateTask = await taskRepo.save(checkTask)
+          // checkTask.comment = item.message
+          // const updateTask = await taskRepo.save(checkTask)
           continue
         }
         continue
@@ -126,6 +126,20 @@ export class FigmaModels {
     await todoRepo.save(newTodo)
   }
 
+  static getUserTasks = async (payload: { user_id: string }) => {
+    const getTasks = await taskRepo.createQueryBuilder('task').leftJoin('task.user', "user").where('user.figma_id = :id', { id: payload.user_id }).getMany()
+
+    return getTasks
+  }
+
+  static editTaskComment = async (payload: { task_id: string, title: string }) => {
+    const getTask = await taskRepo.createQueryBuilder('task').where('task.figma_id = :figma_id', { figma_id: payload.task_id }).getOne()
+
+    getTask.comment = payload.title
+    await taskRepo.save(getTask)
+    return { message: 'Task updated' }
+  }
+
   static getAllTaskTodo = async (payload: CreateTodo) => {
     const getTaskTodo = await todoRepo.createQueryBuilder('todo').leftJoin('todo.task', 'task').where('task.id = :task_id', { task_id: payload.task_id }).orderBy('todo.is_resolved', "ASC").getMany()
 
@@ -133,7 +147,6 @@ export class FigmaModels {
   }
 
   static getFileTodo = async (payload: CreateTodo) => {
-    console.log(payload)
     const getTaskTodo = await todoRepo.createQueryBuilder('todo').leftJoin('todo.user', 'user').leftJoin('todo.file', 'file').where('file.figma_file_id = :file_id', { file_id: payload.file_id }).andWhere('user.figma_id = :user_id', { user_id: payload.user_id }).getMany()
 
     return getTaskTodo

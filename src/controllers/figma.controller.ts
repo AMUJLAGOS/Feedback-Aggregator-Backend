@@ -35,6 +35,25 @@ export class FigmaControllers {
     }
   }
 
+  static getUserTasks = async (req: FastifyRequest<{ Params: { user_id: string } }>, reply: FastifyReply) => {
+    try {
+      const res = await FigmaModels.getUserTasks(req.params)
+      reply.code(200).send({ ...okayRes, data: res })
+    } catch (e) {
+      reply.code(400).send({ ...errorRes, message: e.message })
+    }
+  }
+
+
+  static editTaskComment = async (req: FastifyRequest<{ Body: { task_id: string, title: string } }>, reply: FastifyReply) => {
+    try {
+      const res = await FigmaModels.editTaskComment(req.body)
+      reply.code(200).send({ ...okayRes, data: res })
+    } catch (e) {
+      reply.code(400).send({ ...errorRes, message: e.message })
+    }
+  }
+
   static createTask = async (req: FastifyRequest<{ Body: createTask[] }>, reply: FastifyReply) => {
     try {
       const res = await FigmaModels.createTask(req.body)

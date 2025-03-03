@@ -89,3 +89,11 @@ export const changeTodoStatus = {
 export const addDueDate = {
   handler: FigmaControllers.addDueDate
 }
+
+export const userTasks = {
+  handler: FigmaControllers.getUserTasks
+}
+
+export const editComment = {
+  handler: FigmaControllers.editTaskComment
+}
