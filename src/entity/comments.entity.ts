@@ -18,7 +18,7 @@ export class FigmaTask {
   @Column()
   figma_id: string
 
-  @Column()
+  @Column({ nullable: true })
   figma_uuid: string
 
   @Column()
