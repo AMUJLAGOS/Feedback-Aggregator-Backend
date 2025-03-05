@@ -38,7 +38,7 @@ async function main() {
     console.log(e)
   }
   try {
-    await fastify.listen({ port: 3030, host: process.env.HOST || '0.0.0.0' })
+    await fastify.listen({ port: 9000, host: process.env.HOST || '0.0.0.0' })
     console.log('server up!')
   } catch (e) {
     fastify.log.error(e)
