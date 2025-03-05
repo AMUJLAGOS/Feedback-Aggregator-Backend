@@ -24,7 +24,7 @@ export class FigmaTask {
   @Column()
   comment: string
 
-  @Column()
+  @Column({ nullable: true })
   board_name: string
 
   @Column({ nullable: true })
